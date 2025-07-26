@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rifa do Jerald's</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; background: #121212; color: #fff; }
+    h1 { color: #5A31F4; }
+    .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 8px; margin: 2rem auto; max-width: 600px; }
+    .number { background: #1e1e1e; padding: 10px; border-radius: 8px; cursor: pointer; border: 2px solid #5A31F4; }
+    .selected { background-color: #5A31F4; color: white; }
+    form { margin-top: 2rem; }
+    input, button { padding: 10px; margin: 5px; width: 80%; max-width: 300px; border-radius: 6px; border: none; }
+    #confirmacao { background: #1e1e1e; padding: 20px; border-radius: 10px; margin-top: 20px; }
+    .pix-icon { width: 20px; vertical-align: middle; margin-right: 5px; }
+    .euro { font-weight: bold; color: #00ffcc; }
+    .real { font-weight: bold; color: #99ff99; }
+  </style>
+</head>
+<body>
+  <h1>🎉 Rifa do Jerald's</h1>
+  <p>Escolha seu número e preencha os dados para participar.</p>
+  <p class="euro">💶 Valor: €50</p>
+  <p class="real">🇧🇷 Ou R$320 via Pix no Brasil</p>
+  <div class="grid" id="numberGrid"></div>
+
+  <form id="form">
+    <input type="text" id="nome" placeholder="Seu nome" required /><br />
+    <input type="text" id="whatsapp" placeholder="WhatsApp" required /><br />
+    <input type="hidden" id="numeroEscolhido" name="numero" />
+    <button type="submit">Reservar número</button>
+  </form>
+
+  <div id="confirmacao" style="display:none;">
+    <h3>✅ Número reservado!</h3>
+    <p>Envie <span class="euro">€50</span> ou <span class="real">R$320</span> para:</p>
+    <p><strong>IBAN:</strong> FR7630003032910005063056674</p>
+    <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Pix_Logo_-_Marca.png/320px-Pix_Logo_-_Marca.png" class="pix-icon"/> <strong>Chave Pix:</strong> 11996829250</p>
+    <p><strong>Nome:</strong> Alexandre S.</p>
+  </div>
+
+  <script>
+    const grid = document.getElementById('numberGrid');
+    const confirmBox = document.getElementById('confirmacao');
+    const form = document.getElementById('form');
+    const numeroInput = document.getElementById('numeroEscolhido');
+    let selected = null;
+
+    for (let i = 1; i <= 100; i++) {
+      const div = document.createElement('div');
+      div.className = 'number';
+      div.innerText = i;
+      div.onclick = () => {
+        document.querySelectorAll('.number').forEach(el => el.classList.remove('selected'));
+        div.classList.add('selected');
+        selected = i;
+        numeroInput.value = i;
+      };
+      grid.appendChild(div);
+    }
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      if (!selected) return alert('Selecione um número!');
+      confirmBox.style.display = 'block';
+      form.style.display = 'none';
+    };
+  </script>
+</body>
+</html>
