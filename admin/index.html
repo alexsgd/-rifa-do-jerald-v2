@@ -1,9 +1,85 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="refresh" content="0; url=https://rifa-do-jerald-admin.vercel.app/admin" />
-  </head>
-  <body>
-    <p>Redirecionando para o painel administrativo...</p>
-  </body>
+<!DOCTYPE html><html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Painel Administrativo - Rifa do Jerald</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: sans-serif;
+      padding: 2rem;
+    }
+    h1 {
+      color: #5A31F4;
+    }
+    table {
+      width: 100%;
+      margin-top: 1rem;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #444;
+      text-align: left;
+    }
+    .paid {
+      color: #0f0;
+    }
+    .unpaid {
+      color: #f00;
+    }
+    button {
+      padding: 5px 10px;
+      background: #5A31F4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Painel Administrativo - Rifa do Jerald</h1>
+  <p>Abaixo está a lista de reservas recebidas.</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Número</th>
+        <th>Nome</th>
+        <th>WhatsApp</th>
+        <th>Status</th>
+        <th>Ação</th>
+      </tr>
+    </thead>
+    <tbody id="reserva-list">
+      <!-- Conteúdo será preenchido dinamicamente -->
+    </tbody>
+  </table>  <script>
+    const reservas = JSON.parse(localStorage.getItem('reservas') || '[]');
+
+    const tabela = document.getElementById('reserva-list');
+
+    reservas.forEach((reserva, index) => {
+      const tr = document.createElement('tr');
+
+      const pago = reserva.pago ? 'paid' : 'unpaid';
+
+      tr.innerHTML = `
+        <td>${reserva.numero}</td>
+        <td>${reserva.nome}</td>
+        <td>${reserva.whatsapp}</td>
+        <td class="${pago}">${reserva.pago ? 'Pago' : 'Pendente'}</td>
+        <td><button onclick="marcarPago(${index})">Marcar como pago</button></td>
+      `;
+
+      tabela.appendChild(tr);
+    });
+
+    function marcarPago(index) {
+      reservas[index].pago = true;
+      localStorage.setItem('reservas', JSON.stringify(reservas));
+      location.reload();
+    }
+  </script></body>
 </html>
